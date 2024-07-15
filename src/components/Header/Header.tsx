@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
+import { useState } from 'react'
 import { Menu as MenuIcon } from 'lucide-react'
 
-import { ShopCartButton } from '../ShopCartButton'
-import { Button } from '../ui/Button'
 import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import { Sheet } from '../ui/Sheet'
+import { Sheet } from '@/components/ui/Sheet'
+import { Button } from '@/components/ui/Button'
+import { ShopCartButton } from '@/components/ShopCartButton'
 
 const navigationLinks = [
   {
@@ -28,13 +28,17 @@ const navigationLinks = [
   },
 ]
 
-export const Header = () => {
+interface HeaderProps {
+  className?: string
+}
+
+export const Header = ({ className }: HeaderProps) => {
   const [openCart, setOpenCart] = useState(false)
   const [openMenu, setOpenMenu] = useState(false)
 
   return (
-    <header className='bg-primary text-white fixed w-full z-20 top-0 start-0 shadow-md'>
-      <section className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
+    <header className={cn('bg-primary text-white fixed w-full z-20 top-0 start-0 shadow-md h-[60px]', className)}>
+      <section className='max-w-screen-xl flex items-center justify-between mx-auto p-4 h-[60px]'>
         <Link href='/'>
           <Image
             src='https://cdn.shopify.com/s/files/1/0587/6075/7446/files/Brand-logo-new_1.webp'

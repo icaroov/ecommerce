@@ -27,10 +27,6 @@ interface MainSheetProps {
 }
 
 const Sheet = ({ children, title = '', description = '', isOpen, onClose }: MainSheetProps) => {
-  if (!isOpen) {
-    onClose()
-  }
-
   return (
     <SheetRoot open={isOpen} onOpenChange={onClose}>
       <SheetContent>
