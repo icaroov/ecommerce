@@ -1,7 +1,8 @@
-'use client'
+import { ProductsList } from '@/components/ProductsList'
+import { getProducts } from '@/app/actions/getProducts'
 
-import { Sheet } from '@/components/ui/Sheet'
+export default async function HomePage() {
+  const products = await getProducts()
 
-export default function HomePage() {
-  return <div className='p-4 mt-12'>Lista dos produtos</div>
+  return <ProductsList products={products} />
 }

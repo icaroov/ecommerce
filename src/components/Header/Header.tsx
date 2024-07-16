@@ -12,17 +12,17 @@ import { ShopCartButton } from '@/components/ShopCartButton'
 
 const navigationLinks = [
   {
-    name: 'Início',
+    name: 'Home',
     href: '/',
     current: true,
   },
   {
-    name: 'Sobre',
+    name: 'About Us',
     href: '#',
     current: false,
   },
   {
-    name: 'Contato',
+    name: 'Contact Us',
     href: '#',
     current: false,
   },
@@ -37,8 +37,8 @@ export const Header = ({ className }: HeaderProps) => {
   const [openMenu, setOpenMenu] = useState(false)
 
   return (
-    <header className={cn('bg-primary text-white fixed w-full z-20 top-0 start-0 shadow-md h-[60px]', className)}>
-      <section className='max-w-screen-xl flex items-center justify-between mx-auto p-4 h-[60px]'>
+    <header className={cn('bg-primary text-white sticky w-full z-20 top-0 start-0 shadow-md h-[60px]', className)}>
+      <section className='max-w-screen-xl flex items-center justify-between mx-auto h-16 px-4 sm:px-6 lg:px-8'>
         <Link href='/'>
           <Image
             src='https://cdn.shopify.com/s/files/1/0587/6075/7446/files/Brand-logo-new_1.webp'
@@ -52,7 +52,7 @@ export const Header = ({ className }: HeaderProps) => {
           <ShopCartButton onClick={() => setOpenCart((prev) => !prev)} openCart={openCart} />
 
           <Button variant='ghost' className='md:hidden' onClick={() => setOpenMenu(true)}>
-            <span className='sr-only'>Abrir menu</span>
+            <span className='sr-only'>Open menu</span>
             <MenuIcon />
           </Button>
         </div>
@@ -63,6 +63,7 @@ export const Header = ({ className }: HeaderProps) => {
               <li key={item.name}>
                 <Link
                   href={item.href}
+                  prefetch={false}
                   className={cn('text-white hover:underline px-2 py-1', item.current ? 'underline font-semibold' : '')}
                 >
                   {item.name}
@@ -79,6 +80,7 @@ export const Header = ({ className }: HeaderProps) => {
                 <li key={item.name}>
                   <Link
                     href={item.href}
+                    prefetch={false}
                     className={cn(
                       'text-black bg-transparen hover:underline px-2 py-1',
                       item.current ? 'underline font-semibold' : ''
