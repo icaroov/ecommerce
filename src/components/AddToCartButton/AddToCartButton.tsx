@@ -29,8 +29,6 @@ interface AddToCartButtonProps {
 export const AddToCartButton = ({ productId, cartId, onAddItemToCart }: AddToCartButtonProps) => {
   const [isPending, startTransition] = useTransition()
 
-  console.log('AddToCartButton:', { cartId })
-
   return (
     <Button
       className='gap-2 uppercase w-full'

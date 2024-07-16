@@ -14,6 +14,8 @@ export async function middleware(request: NextRequest) {
 
   let cart: CartType | null = null
 
+  console.log('Current Cart Id:', cartData?.value)
+
   if (!cartData) {
     const sessionId = new Date().getTime().toString()
 
