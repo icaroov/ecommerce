@@ -1,16 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingCartIcon } from 'lucide-react'
 
 import { ProductType } from '@/types'
-import { Button } from '@/components/ui/Button'
 import { formatPrice } from '@/utils/formatPrice'
+import { AddToCartButton } from '@/components/AddToCartButton'
+import { addItemToCart } from '@/app/actions/addItemToCart'
 
 interface ProductCardProps {
   product: ProductType
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = async ({ product }: ProductCardProps) => {
   const formattedPrice = formatPrice(product.price)
 
   return (
@@ -39,10 +39,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <span className='font-semibold text-primary'>{formattedPrice}</span>
       </div>
 
-      <Button className='gap-2 uppercase w-full' size='lg'>
-        <ShoppingCartIcon className='w-4 h-4 ml-2' />
-        Add to Cart
-      </Button>
+      <AddToCartButton productId={product.id} addItemToCartQuery={addItemToCart} />
     </div>
   )
 }

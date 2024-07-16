@@ -6,9 +6,10 @@ import { useState } from 'react'
 import { Menu as MenuIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import { Sheet } from '@/components/ui/Sheet'
 import { Button } from '@/components/ui/Button'
 import { ShopCartButton } from '@/components/ShopCartButton'
+import { MobileMenu } from '@/components/MobileMenu/MobileMenu'
+import { CartType } from '@/types'
 
 const navigationLinks = [
   {
@@ -30,10 +31,10 @@ const navigationLinks = [
 
 interface HeaderProps {
   className?: string
+  cart: CartType
 }
 
-export const Header = ({ className }: HeaderProps) => {
-  const [openCart, setOpenCart] = useState(false)
+export const Header = ({ className, cart }: HeaderProps) => {
   const [openMenu, setOpenMenu] = useState(false)
 
   return (
@@ -49,7 +50,7 @@ export const Header = ({ className }: HeaderProps) => {
         </Link>
 
         <div className='flex md:order-2 space-x-3'>
-          <ShopCartButton onClick={() => setOpenCart((prev) => !prev)} openCart={openCart} />
+          <ShopCartButton cart={cart} />
 
           <Button variant='ghost' className='md:hidden' onClick={() => setOpenMenu(true)}>
             <span className='sr-only'>Open menu</span>
@@ -73,26 +74,7 @@ export const Header = ({ className }: HeaderProps) => {
           </ul>
         </nav>
 
-        <Sheet isOpen={openMenu} onClose={() => setOpenMenu(false)}>
-          <nav>
-            <ul className='flex flex-col p-4 gap-3 mt-5'>
-              {navigationLinks.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    prefetch={false}
-                    className={cn(
-                      'text-black bg-transparen hover:underline px-2 py-1',
-                      item.current ? 'underline font-semibold' : ''
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </Sheet>
+        <MobileMenu navigationLinks={navigationLinks} isOpen={openMenu} onClose={() => setOpenMenu(false)} />
       </section>
     </header>
   )
