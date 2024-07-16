@@ -32,9 +32,11 @@ const navigationLinks = [
 interface HeaderProps {
   className?: string
   cart: CartType
+  onRemoveItemFromCart: (cartId: string, productId: string) => Promise<CartType>
+  onAddItemToCart: (cartId: string, productId: string) => Promise<CartType>
 }
 
-export const Header = ({ className, cart }: HeaderProps) => {
+export const Header = ({ className, cart, onRemoveItemFromCart, onAddItemToCart }: HeaderProps) => {
   const [openMenu, setOpenMenu] = useState(false)
 
   return (
@@ -50,7 +52,7 @@ export const Header = ({ className, cart }: HeaderProps) => {
         </Link>
 
         <div className='flex md:order-2 space-x-3'>
-          <ShopCartButton cart={cart} />
+          <ShopCartButton cart={cart} onRemoveItemFromCart={onRemoveItemFromCart} onAddItemToCart={onAddItemToCart} />
 
           <Button variant='ghost' className='md:hidden' onClick={() => setOpenMenu(true)}>
             <span className='sr-only'>Open menu</span>

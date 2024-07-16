@@ -1,21 +1,17 @@
 'use server'
 
-import { CartType } from '@/types'
 import { revalidateTag } from 'next/cache'
 
-type RemoveItemFromCart = {
-  cartId: string
-  productId: string
-}
+import { CartType } from '@/types'
 
-export const removeItemFromCart = async ({ cartId, productId }: RemoveItemFromCart): Promise<CartType> => {
+export const removeItemFromCart = async (cartId: string, productId: string): Promise<CartType> => {
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/cart/items', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cartId, productId }),
+      body: JSON.stringify({ cartId, productId: String(productId) }),
     })
 
     if (!response.ok) {
@@ -26,10 +22,6 @@ export const removeItemFromCart = async ({ cartId, productId }: RemoveItemFromCa
 
     return await response.json()
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message)
-    }
-
     throw new Error('Unable to remove the product to the cart.')
   }
 }

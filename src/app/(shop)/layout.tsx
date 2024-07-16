@@ -1,12 +1,14 @@
 import { cookies } from 'next/headers'
 import { Toaster } from 'sonner'
 
+import { CartType } from '@/types'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer/Footer'
 import { createCart } from '@/app/actions/createCart'
 import { getCartById } from '@/app/actions/getCartById'
+import { addItemToCart } from '@/app/actions/addItemToCart'
 import { AnnouncementBar } from '@/components/AnnouncementBar'
-import { CartType } from '@/types'
+import { removeItemFromCart } from '@/app/actions/removeItemFromCart'
 
 export default async function ShopLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies()
@@ -25,7 +27,7 @@ export default async function ShopLayout({ children }: { children: React.ReactNo
     <>
       <Toaster />
       <AnnouncementBar message='Free shipping on orders over $100' />
-      <Header cart={cart} />
+      <Header cart={cart} onRemoveItemFromCart={removeItemFromCart} onAddItemToCart={addItemToCart} />
 
       <main className='max-w-screen-xl mx-auto py-12 md:py-20'>{children}</main>
 

@@ -11,10 +11,10 @@ import { getCartFromStorage, saveCartToStorage } from '@/utils/cartStorage'
 
 interface AddToCartButtonProps {
   productId: string
-  addItemToCartQuery: ({ cartId, productId }: { cartId: string; productId: string }) => void
+  onAddItemToCart: (cartId: string, productId: string) => void
 }
 
-export const AddToCartButton = ({ productId, addItemToCartQuery }: AddToCartButtonProps) => {
+export const AddToCartButton = ({ productId, onAddItemToCart }: AddToCartButtonProps) => {
   const [isPending, startTransition] = useTransition()
 
   return (
@@ -32,7 +32,7 @@ export const AddToCartButton = ({ productId, addItemToCartQuery }: AddToCartButt
             saveCartToStorage(cartData.cartId, cartData.sessionId)
           }
 
-          addItemToCartQuery({ cartId: cartData.cartId, productId })
+          onAddItemToCart(cartData.cartId, productId)
           toast.success('Item added to cart')
         })
       }}

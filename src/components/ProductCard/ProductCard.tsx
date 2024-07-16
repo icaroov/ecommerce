@@ -39,7 +39,7 @@ export const ProductCard = async ({ product }: ProductCardProps) => {
         <span className='font-semibold text-primary'>{formattedPrice}</span>
       </div>
 
-      <AddToCartButton productId={product.id} addItemToCartQuery={addItemToCart} />
+      <AddToCartButton productId={product.id} onAddItemToCart={addItemToCart} />
     </div>
   )
 }

@@ -1,26 +1,26 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { ShoppingCartIcon } from 'lucide-react'
 
 import { CartType } from '@/types'
 import { Sheet } from '@/components/ui/Sheet'
 import { Button } from '@/components/ui/Button'
-import { Loader } from '@/components/ui/Loader'
 import { CartItem } from '@/components/CartItem'
 import { formatPrice } from '@/utils/formatPrice'
 
 interface ShopCartButtonProps {
   cart: CartType
+  onRemoveItemFromCart: (cartId: string, productId: string) => Promise<CartType>
+  onAddItemToCart: (cartId: string, productId: string) => Promise<CartType>
 }
 
-export const ShopCartButton = ({ cart }: ShopCartButtonProps) => {
-  const [isPending, startTransition] = useTransition()
+export const ShopCartButton = ({ cart, onRemoveItemFromCart, onAddItemToCart }: ShopCartButtonProps) => {
   const [openCart, setOpenCart] = useState(false)
 
   const quantity = cart.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
 
-  const formattedTotal = formatPrice(cart.total)
+  const formattedTotal = formatPrice(cart.total || 0)
 
   return (
     <>
@@ -39,15 +39,11 @@ export const ShopCartButton = ({ cart }: ShopCartButtonProps) => {
         onClose={() => setOpenCart((prev) => !prev)}
       >
         <div className='flex flex-col items-center justify-between h-full py-8'>
-          {isPending && (
-            <div className='flex items-center justify-center h-full'>
-              <Loader className='fill-black w-12 h-12' />
-            </div>
-          )}
-
-          <div className='flex flex-col items-center justify-center gap-4 mt-4'>
+          <div className='flex flex-col items-start justify-center gap-4 mt-4'>
             {cart.items?.length ? (
-              cart.items.map((item) => <CartItem key={item.id} item={item} onRemove={() => {}} />)
+              cart.items.map((item) => (
+                <CartItem key={item.id} item={item} onDecrease={onRemoveItemFromCart} onIncrease={onAddItemToCart} />
+              ))
             ) : (
               <p>No items</p>
             )}

@@ -1,14 +1,10 @@
 'use server'
 
-import { CartType } from '@/types'
 import { revalidateTag } from 'next/cache'
 
-type AddItemToCart = {
-  cartId: string
-  productId: string
-}
+import { CartType } from '@/types'
 
-export const addItemToCart = async ({ cartId, productId }: AddItemToCart): Promise<CartType> => {
+export const addItemToCart = async (cartId: string, productId: string): Promise<CartType> => {
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/cart/items', {
       method: 'POST',
