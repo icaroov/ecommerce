@@ -3,11 +3,12 @@
 import { useState, useTransition } from 'react'
 import { ShoppingCartIcon } from 'lucide-react'
 
-import { CartType, ProductType } from '@/types'
+import { CartType } from '@/types'
 import { Sheet } from '@/components/ui/Sheet'
 import { Button } from '@/components/ui/Button'
 import { Loader } from '@/components/ui/Loader'
-import { ProductsList } from '@/components/ProductsList'
+import { CartItem } from '@/components/CartItem'
+import { formatPrice } from '@/utils/formatPrice'
 
 interface ShopCartButtonProps {
   cart: CartType
@@ -16,9 +17,10 @@ interface ShopCartButtonProps {
 export const ShopCartButton = ({ cart }: ShopCartButtonProps) => {
   const [isPending, startTransition] = useTransition()
   const [openCart, setOpenCart] = useState(false)
-  const [products, setProducts] = useState<ProductType[]>([])
 
   const quantity = cart.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
+
+  const formattedTotal = formatPrice(cart.total)
 
   return (
     <>
@@ -36,13 +38,30 @@ export const ShopCartButton = ({ cart }: ShopCartButtonProps) => {
         title={`${quantity} ${quantity === 1 ? 'item' : 'items'}`}
         onClose={() => setOpenCart((prev) => !prev)}
       >
-        {isPending && (
-          <div className='flex items-center justify-center h-full'>
-            <Loader className='fill-black w-12 h-12' />
-          </div>
-        )}
+        <div className='flex flex-col items-center justify-between h-full py-8'>
+          {isPending && (
+            <div className='flex items-center justify-center h-full'>
+              <Loader className='fill-black w-12 h-12' />
+            </div>
+          )}
 
-        <ProductsList products={products} />
+          <div className='flex flex-col items-center justify-center gap-4 mt-4'>
+            {cart.items?.length ? (
+              cart.items.map((item) => <CartItem key={item.id} item={item} onRemove={() => {}} />)
+            ) : (
+              <p>No items</p>
+            )}
+          </div>
+
+          <div className='border-t pt-4 w-full'>
+            <div className='flex items-center justify-between'>
+              <span className='font-medium'>Total</span>
+              <span className='font-medium'>{formattedTotal}</span>
+            </div>
+
+            <Button className='mt-4 w-full'>Checkout</Button>
+          </div>
+        </div>
       </Sheet>
     </>
   )
