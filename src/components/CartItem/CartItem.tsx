@@ -9,7 +9,19 @@ import { formatPrice } from '@/utils/formatPrice'
 interface CartItemProps {
   item: CartItemType
   onDecrease: (cartId: string, productId: string) => Promise<CartType>
-  onIncrease: (cartId: string, productId: string) => Promise<CartType>
+  onIncrease: (
+    cartId: string,
+    productId: string
+  ) => Promise<
+    | {
+        cart: null
+        error: string
+      }
+    | {
+        cart: CartType
+        error: null
+      }
+  >
 }
 
 export const CartItem = ({ item, onDecrease, onIncrease }: CartItemProps) => {

@@ -1,21 +1,35 @@
 'use client'
 
 import { useTransition } from 'react'
-import { ShoppingCartIcon } from 'lucide-react'
 import { toast } from 'sonner'
+import { ShoppingCartIcon } from 'lucide-react'
 
+import { CartType } from '@/types'
 import { Button } from '@/components/ui/Button'
 import { Loader } from '@/components/ui/Loader'
-import { createCart } from '@/app/actions/createCart'
-import { getCartFromStorage, saveCartToStorage } from '@/utils/cartStorage'
 
 interface AddToCartButtonProps {
   productId: string
-  onAddItemToCart: (cartId: string, productId: string) => void
+  cartId: string
+  onAddItemToCart: (
+    cartId: string,
+    productId: string
+  ) => Promise<
+    | {
+        cart: null
+        error: string
+      }
+    | {
+        cart: CartType
+        error: null
+      }
+  >
 }
 
-export const AddToCartButton = ({ productId, onAddItemToCart }: AddToCartButtonProps) => {
+export const AddToCartButton = ({ productId, cartId, onAddItemToCart }: AddToCartButtonProps) => {
   const [isPending, startTransition] = useTransition()
+
+  console.log('AddToCartButton:', { cartId })
 
   return (
     <Button
@@ -24,16 +38,13 @@ export const AddToCartButton = ({ productId, onAddItemToCart }: AddToCartButtonP
       disabled={isPending}
       onClick={() => {
         startTransition(async () => {
-          let cartData = getCartFromStorage()
+          const result = await onAddItemToCart(cartId, productId)
 
-          if (!cartData) {
-            const newCart = await createCart(new Date().getTime().toString())
-            cartData = { cartId: newCart.id, sessionId: newCart.sessionId }
-            saveCartToStorage(cartData.cartId, cartData.sessionId)
+          if (result?.error) {
+            toast.error(result.error)
+          } else {
+            toast.success('Item added to cart')
           }
-
-          onAddItemToCart(cartData.cartId, productId)
-          toast.success('Item added to cart')
         })
       }}
     >

@@ -5,6 +5,7 @@ import { ProductType } from '@/types'
 import { formatPrice } from '@/utils/formatPrice'
 import { AddToCartButton } from '@/components/AddToCartButton'
 import { addItemToCart } from '@/app/actions/addItemToCart'
+import { cookies } from 'next/headers'
 
 interface ProductCardProps {
   product: ProductType
@@ -12,6 +13,7 @@ interface ProductCardProps {
 
 export const ProductCard = async ({ product }: ProductCardProps) => {
   const formattedPrice = formatPrice(product.price)
+  const cartId = cookies().get('cartId')?.value || ''
 
   return (
     <div className='max-w-sm bg-white flex flex-col items-center justify-between'>
@@ -39,7 +41,7 @@ export const ProductCard = async ({ product }: ProductCardProps) => {
         <span className='font-semibold text-primary'>{formattedPrice}</span>
       </div>
 
-      <AddToCartButton productId={product.id} onAddItemToCart={addItemToCart} />
+      <AddToCartButton productId={product.id} onAddItemToCart={addItemToCart} cartId={cartId} />
     </div>
   )
 }

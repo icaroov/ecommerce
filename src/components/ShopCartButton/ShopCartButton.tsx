@@ -12,7 +12,19 @@ import { formatPrice } from '@/utils/formatPrice'
 interface ShopCartButtonProps {
   cart: CartType
   onRemoveItemFromCart: (cartId: string, productId: string) => Promise<CartType>
-  onAddItemToCart: (cartId: string, productId: string) => Promise<CartType>
+  onAddItemToCart: (
+    cartId: string,
+    productId: string
+  ) => Promise<
+    | {
+        cart: null
+        error: string
+      }
+    | {
+        cart: CartType
+        error: null
+      }
+  >
 }
 
 export const ShopCartButton = ({ cart, onRemoveItemFromCart, onAddItemToCart }: ShopCartButtonProps) => {
